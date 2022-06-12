@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+RULESET="table ip test1 {
+        chain y {
+                ip saddr 4.4.4.4 dnat to 1.1.1.1
+                ip saddr 5.5.5.5 dnat to 2.2.2.2
+        }
+}"
+
+$NFT -o -f - <<< $RULESET
+
+RULESET="table ip test2 {
+        chain y {
+                tcp dport 80 dnat to 1.1.1.1:8001
+                tcp dport 81 dnat to 2.2.2.2:9001
+        }
+}"
+
+$NFT -o -f - <<< $RULESET
+
+RULESET="table ip test3 {
+        chain y {
+                ip saddr 1.1.1.1 tcp sport 1024-65535 snat to 3.3.3.3
+                ip saddr 2.2.2.2 tcp sport 1024-65535 snat to 4.4.4.4
+        }
+}"
+
+$NFT -o -f - <<< $RULESET
+
+RULESET="table ip test4 {
+        chain y {
+                ip daddr 1.1.1.1 tcp dport 80 dnat to 4.4.4.4:8000
+                ip daddr 2.2.2.2 tcp dport 81 dnat to 3.3.3.3:9000
+        }
+}"
+
+$NFT -o -f - <<< $RULESET

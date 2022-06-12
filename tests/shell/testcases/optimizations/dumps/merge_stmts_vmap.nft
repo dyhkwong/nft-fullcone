@@ -1,0 +1,9 @@
+table ip x {
+	chain y {
+		ct state vmap { invalid : drop, established : accept, related : accept }
+	}
+
+	chain z {
+		tcp dport vmap { 1 : accept, 2-3 : drop, 4 : accept }
+	}
+}

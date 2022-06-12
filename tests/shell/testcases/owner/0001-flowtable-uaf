@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+$NFT -f - <<EOF
+table t {
+ flags owner
+ flowtable f {
+  devices = { lo }
+ }
+}
+EOF
+
+# trigger uaf.
+$NFT -f - <<EOF
+table t {
+ flags owner
+ flowtable f {
+  devices = { lo }
+ }
+}
+EOF
